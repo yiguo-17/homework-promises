@@ -162,3 +162,92 @@ let athletes = [
     team: 'NY Giants',
   },
 ];
+
+function compareToTen(num){
+  return new Promise((resolve, reject)=>{
+   if (num>=10){
+     resolve(`${num} is greater than or equal to 10, resolved!`)
+   } 
+   else{reject(`${num} is less than 10, error`)}
+  })
+}
+let randomNum = Math.round(Math.random()*20);
+compareToTen(randomNum).then((message)=>{
+  console.log(message)}).catch((message)=>{
+    console.log(message)
+  })
+
+  let order = 'Slurpy';
+ let drink = new Promise((resolve,reject)=>{
+    console.log(`I'll be right back with your ${order}`);
+    let orderCannotBeFilled = true;
+    if(orderCannotBeFilled){
+      setTimeout(()=>{reject(`Sorry we are all out of ${order}`)},2000)
+    }
+    else{setTimeout(()=>{resolve(`Server returns: 'Here is your ${order}'`)},4000)}
+  })
+drink.then((message)=>console.log(message)).catch((message)=>console.log(message));
+let check = function(arr){for (const item of arr){
+  if (typeof(item) !== 'string'){return false}}
+  return true;
+}
+function makeAllCaps(arr){
+  let arrOrNot = check(arr);
+  return new Promise((resolve,reject)=>{
+    if(arrOrNot){resolve(arr.map((item)=>item.toUpperCase()))}
+    else{reject('error')}
+  })
+}
+function sortWords(arr){
+  let arrOrNot = check(arr);
+  return new Promise((resolve,reject)=>{
+    if(arrOrNot){resolve(arr.sort())}
+    else{reject('error')}
+  })
+}
+
+makeAllCaps(arrayOfWords).then((arr)=>{console.log(arr)}).catch((message)=>{console.log(message)});
+
+sortWords(arrayOfWords).then((arr)=>{console.log(arr)}).catch((message)=>console.log(message))
+makeAllCaps(arrayOfWords).then((arr)=>arr).catch((message)=>console.log(message)).then((arr)=>sortWords(arr)).then((arr) =>{console.log(arr)})
+
+let totalSales = new Promise((resolve,reject)=>{
+  resolve(json.data)
+  reject('error')
+})
+
+ totalSales.then((arr)=>{
+   let firms = arr.filter((company)=>company.industry==='Legal');
+   console.log(firms);
+   return firms
+  }).then((firms)=>{
+    let contacts = firms.map((firm)=>firm.contact);
+    console.log(`Contacts from the legal profession: ${contacts.join(', ')}`)
+    let sale = firms.map((firm)=> firm.sales * 0.3)
+    return sale
+  }).then((sale)=>{
+    let result = sale.reduce((sum,item)=>{return sum+ item},0);
+    if(result ===3000){return "Total sales for everyone from the Legal profession after taxes is $30000" }
+  })
+
+  function playerFunction(arr){
+    let playerArr = [...arr];
+    return new Promise((resolve,reject)=>{
+      resolve(playerArr);
+      reject('error')
+    })
+  }
+  playerFunction(athletes).then((arr)=>{
+    arr.map((player)=>{
+      (player.position ==='quarterback')?player.sport = 'football':player.sport='basketball'
+    })
+    
+    console.log('Sport added: '+JSON.stringify(arr));
+    return arr
+  }).then((arr)=>{
+    arr.map((player)=>{
+      let{name,position,team,sport} = player;
+      (sport === 'football')?console.log(name+' plays '+sport+' and is a '+position+' for '+team):console.log('')
+    })
+  }).then(()=>{console.log(athletes)}).catch((message)=>{console.log(message)})
+  
